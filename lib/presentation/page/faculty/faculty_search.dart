@@ -30,7 +30,6 @@ class _FacultySearchState extends State<FacultySearch> {
   final BaseInfoProv bProv = ProvManager.baseInfoProv;
   final TeacherSearchProv tProv = ProvManager.teacherSearchProv;
   final NumberPaginatorController controller = NumberPaginatorController();
-  int _currentPage = 0;
 
   @override
   void initState() {
@@ -585,7 +584,8 @@ class _FacultySearchState extends State<FacultySearch> {
                         ),
                         child: InkWell(
                           splashColor: mtheme.colorScheme.secondaryContainer,
-                          onTap: (){},
+                          onTap: (){
+                          },
                           child: Row(
                             children: [
                               Padding(

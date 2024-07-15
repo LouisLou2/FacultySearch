@@ -23,7 +23,9 @@ class TeacherSearchProv with ChangeNotifier {
   int searchCount=0;
   /// *******************
   List<TeacherBrief> nowTeachers=[];
+  /// *******************
   Teacher? nowTeacher;
+  bool get isTeacherNull => nowTeacher==null;
 
   TeacherSearchProv(){
     nowSum=0;
@@ -78,7 +80,6 @@ class TeacherSearchProv with ChangeNotifier {
     searchTeachers();
   }
 
-
   void searchTeachers() async {
     Result<TeaSearchResp> resp = await TeacherDs.getTeaSearchReq(nowReq);
     if(resp.isSuccess){
@@ -92,7 +93,9 @@ class TeacherSearchProv with ChangeNotifier {
     notifyListeners();
   }
 
-  void tapATeacher(int ind) async {
+  void tapATeacher(BuildContext context ,int ind) async {
+    nowTeacher = null;
+    Navigator.of(context).pushNamed('/teacher_intro');
     Result<Teacher> resp = await TeacherDs.getTeaInfo(nowTeachers[ind].teacherId);
     if(resp.isSuccess){
       nowTeacher = resp.data;
