@@ -10,7 +10,8 @@ import 'package:teacher_search/style/style_scheme.dart';
 
 
 class TeacherIntro extends StatefulWidget{
-  const TeacherIntro({super.key});
+  final String? teacherId;
+  const TeacherIntro({super.key, this.teacherId});
 
   @override
   State<StatefulWidget> createState() => _TeacherIntroState();
@@ -28,6 +29,9 @@ class _TeacherIntroState extends State<TeacherIntro> with TickerProviderStateMix
       length: 4,
       vsync: this,
     );
+    if(widget.teacherId!=null){
+      tProv.seeTeacherFromId(widget.teacherId!);
+    }
   }
 
   @override
@@ -46,7 +50,9 @@ class _TeacherIntroState extends State<TeacherIntro> with TickerProviderStateMix
         shouldRebuild: (prev, next) => prev != next,
         builder: (__,isNull,_){
           if(isNull){
-            return const CircularProgressIndicator();
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
           }
           return Row(
             children: [

@@ -12,7 +12,7 @@ import 'package:teacher_search/style/theme_vault.dart';
 import 'package:toastification/toastification.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-// ...
+String? teacherId;
 
 void main(){
   String myurl = Uri.base.toString(); //get complete url
@@ -22,6 +22,8 @@ void main(){
   // Future.delayed(const Duration(seconds: 10), () async {
   //   launchUrl(Uri.http('www.google.com', '/search', {'q': 'dart'}), webOnlyWindowName: '_self');
   // });
+  teacherId = Uri.base.queryParameters["teacherId"];
+  print('teacherId: $teacherId');
   initBeforeRun();
   runApp(const MainApp());
 }
@@ -62,7 +64,7 @@ class MainApp extends StatelessWidget{
                   );
                 },
                 themeMode: ProvManager.themeProv.mode,
-                home: const FacultySearch(),
+                home: teacherId==null ? const FacultySearch() : const TeacherIntro(),
               ),
             );
           },

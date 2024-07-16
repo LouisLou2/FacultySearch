@@ -120,4 +120,15 @@ class TeacherSearchProv with ChangeNotifier {
       ToastHelper.showErrorWithouDesc('Failed');
     }
   }
+
+  Future<void> seeTeacherFromId(String teacherId) async {
+    nowTeacher = null;
+    Result<Teacher> resp = await TeacherDs.getTeaInfo(teacherId);
+    if(resp.isSuccess){
+      nowTeacher = resp.data;
+      notifyListeners();
+    }else{
+      ToastHelper.showErrorWithouDesc('Failed');
+    }
+  }
 }
