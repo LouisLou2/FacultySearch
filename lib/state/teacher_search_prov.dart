@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:teacher_search/const/app_param.dart';
-import 'package:teacher_search/const/teacher_title.dart';
 import 'package:teacher_search/datasource/imple/teacher_ds.dart';
 import 'package:teacher_search/domain/req/tea_search_req.dart';
 import 'package:teacher_search/presentation/helper/toast_helper.dart';
@@ -34,8 +33,24 @@ class TeacherSearchProv with ChangeNotifier {
     nowTeachers=[];
     nowTeacher = null;
   }
+  int get pageTotal{
+    int total = (nowSum/AppParam.pageSize).ceil();
+    return total==0?1:total;
+  }
 
-  int get pageTotal => (nowSum/AppParam.pageSize).ceil();
+  void enterSearchPage() async {
+    nowReq = TeaSearchReq(offset: 0, num: AppParam.pageSize);
+    nowTeachers=[];
+    nowTeacher = null;
+    selectedSchoolInd = -1;
+    selectedMajorInd = 0;
+    selectedTitleInd=0;
+    selectedGenderInd=0;
+    searchCount=0;
+    await ProvManager.baseInfoProv.getSchoolsFromNet();
+    await searchTeachers();
+    notifyListeners();
+  }
 
   void setReqSchool(int ind){
     selectedSchoolInd=ind;
@@ -72,6 +87,7 @@ class TeacherSearchProv with ChangeNotifier {
 
   void setReqName(String name){
     nowReq.name = name.isEmpty?null:name;
+    print(nowReq.toJson());
   }
 
   void setReqPageAndSearch(int ind){
@@ -80,20 +96,20 @@ class TeacherSearchProv with ChangeNotifier {
     searchTeachers();
   }
 
-  void searchTeachers() async {
+  Future<void> searchTeachers() async {
     Result<TeaSearchResp> resp = await TeacherDs.getTeaSearchReq(nowReq);
     if(resp.isSuccess){
       nowSum = resp.data!.sum;
       nowTeachers = resp.data!.teachers;
       notifyListeners();
     }else{
-      ToastHelper.showFaultToast('Failed');
+      ToastHelper.showErrorWithouDesc('Failed');
     }
     ++searchCount;
     notifyListeners();
   }
 
-  void tapATeacher(BuildContext context ,int ind) async {
+  Future<void> tapATeacher(BuildContext context ,int ind) async {
     nowTeacher = null;
     Navigator.of(context).pushNamed('/teacher_intro');
     Result<Teacher> resp = await TeacherDs.getTeaInfo(nowTeachers[ind].teacherId);
@@ -101,7 +117,7 @@ class TeacherSearchProv with ChangeNotifier {
       nowTeacher = resp.data;
       notifyListeners();
     }else{
-      ToastHelper.showFaultToast('Failed');
+      ToastHelper.showErrorWithouDesc('Failed');
     }
   }
 }

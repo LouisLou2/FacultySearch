@@ -9,12 +9,15 @@ class BaseInfoProv extends ChangeNotifier {
   List <School> schools = [];
 
   Future<void> getSchoolsFromNet() async {
+    if(schools.isNotEmpty){
+      return;
+    }
     Result<List<School>> resp = await BaseInfoDs.getSchoolMajor();
     if(resp.isSuccess){
       schools = resp.data!;
       notifyListeners();
     }else{
-      ToastHelper.showFaultToast('Failed Loading Schools');
+      ToastHelper.showErrorWithouDesc('Failed Loading Schools');
     }
   }
 

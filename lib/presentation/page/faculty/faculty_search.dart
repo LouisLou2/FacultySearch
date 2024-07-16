@@ -34,7 +34,7 @@ class _FacultySearchState extends State<FacultySearch> {
   @override
   void initState() {
     super.initState();
-    ProvManager.baseInfoProv.getSchoolsFromNet();
+    tProv.enterSearchPage();
   }
 
   @override
@@ -285,7 +285,7 @@ class _FacultySearchState extends State<FacultySearch> {
                                     ),
                                   ),
                                   options: getTextList([
-                                    getMajorList(tProv.selectedSchoolInd ==-1 ? [] : bProv.schools[selectedSchoolInd].majors),
+                                    getMajorList(tProv.selectedSchoolInd == -1 ? [] : bProv.schools[selectedSchoolInd].majors),
                                   ], context,),
                                   onChanged: (value) {
                                     tProv.setReqMajor(value.item2-1);
@@ -584,8 +584,7 @@ class _FacultySearchState extends State<FacultySearch> {
                         ),
                         child: InkWell(
                           splashColor: mtheme.colorScheme.secondaryContainer,
-                          onTap: (){
-                          },
+                          onTap: ()=>ProvManager.teacherSearchProv.tapATeacher(context, index),
                           child: Row(
                             children: [
                               Padding(

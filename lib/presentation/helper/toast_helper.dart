@@ -1,29 +1,100 @@
 import 'package:flutter/material.dart';
-import 'package:shadcn_ui/shadcn_ui.dart';
-import 'package:teacher_search/data/key_data.dart';
+import 'package:toastification/toastification.dart';
+
+import '../../const/ui_param.dart';
+import '../../style/app_colors.dart';
 
 class ToastHelper {
-  static void showSuccessToast(String message) {
-    ShadToaster.of(GlobalKeyData.currentContext).show(
-      ShadToast(
-        title: Text(message),
+  const ToastHelper._();
+
+  static const Duration errorDuration=Duration(seconds: UIParams.defSnackBarDuration_error);
+  static const Duration warningDuration=Duration(seconds: UIParams.defSnackBarDuration_warning);
+  static const Duration successDuration=Duration(seconds: UIParams.defSnackBarDuration_success);
+
+  static void showSuccess(String title){
+    toastification.show(
+      type: ToastificationType.success,
+      style: ToastificationStyle.simple,
+      title: Text(title,
+        overflow: TextOverflow.ellipsis,
       ),
+      alignment: Alignment.bottomCenter,
+      autoCloseDuration: successDuration,
+      backgroundColor: AppColors.successGreen,
+      foregroundColor: Colors.white,
+      boxShadow: lowModeShadow,
+      closeButtonShowType: CloseButtonShowType.none,
+      dragToClose: true,
     );
   }
-  static void showFaultToast(String message) {
-    ShadToaster.of(GlobalKeyData.currentContext).show(
-      ShadToast.destructive(
-        title: Text(message),
-        action: ShadButton.destructive(
-          text: const Text('Dismiss'),
-          decoration: const ShadDecoration(
-            border: ShadBorder(
-              color: Colors.white,
-            ),
-          ),
-          onPressed: () => ShadToaster.of(GlobalKeyData.currentContext).hide(),
-        ),
+  static void showWarningWithouDesc(String title){
+    toastification.show(
+      type: ToastificationType.warning,
+      style: ToastificationStyle.simple,
+      title: Text(title,
+        overflow: TextOverflow.ellipsis,
       ),
+      alignment: Alignment.bottomCenter,
+      autoCloseDuration: warningDuration,
+      boxShadow: lowModeShadow,
+      closeButtonShowType: CloseButtonShowType.none,
+      dragToClose: true,
+    );
+  }
+  static void showWarningWithDesc(String title,String desc){
+    toastification.show(
+      type: ToastificationType.warning,
+      style: ToastificationStyle.flat,
+      title: Text(
+        title,
+        overflow: TextOverflow.ellipsis,
+      ),
+      description: Text(
+        desc,
+        overflow: TextOverflow.ellipsis,
+      ),
+      alignment: Alignment.bottomCenter,
+      autoCloseDuration: warningDuration,
+      boxShadow: lowModeShadow,
+      closeButtonShowType: CloseButtonShowType.none,
+      dragToClose: true,
+      showProgressBar: false,
+    );
+  }
+  static void showErrorWithouDesc(String title){
+    toastification.show(
+      type: ToastificationType.error,
+      style: ToastificationStyle.simple,
+      title: Text(title,
+        overflow: TextOverflow.ellipsis,
+      ),
+      alignment: Alignment.bottomCenter,
+      autoCloseDuration: errorDuration,
+      primaryColor: AppColors.normalRed,
+      backgroundColor: AppColors.normalRed,
+      foregroundColor: Colors.white,
+      boxShadow: lowModeShadow,
+      closeButtonShowType: CloseButtonShowType.none,
+      dragToClose: true,
+    );
+  }
+  static void showErrorWithDesc(String title,String desc){
+    toastification.show(
+      type: ToastificationType.error,
+      style: ToastificationStyle.fillColored,
+      title: Text(title,
+        overflow: TextOverflow.ellipsis,
+      ),
+      description: Text(
+        desc,
+        overflow: TextOverflow.ellipsis,
+      ),
+      alignment: Alignment.bottomCenter,
+      boxShadow: lowModeShadow,
+      autoCloseDuration: errorDuration,
+      dragToClose: true,
+      closeButtonShowType: CloseButtonShowType.none,
+      showProgressBar: false,
     );
   }
 }

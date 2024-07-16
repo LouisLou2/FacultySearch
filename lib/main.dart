@@ -3,13 +3,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:teacher_search/const/device.dart';
-import 'package:teacher_search/data/key_data.dart';
 import 'package:teacher_search/init_affairs.dart';
 import 'package:teacher_search/presentation/page/faculty/faculty_search.dart';
 import 'package:teacher_search/presentation/page/faculty/teacher_intro.dart';
 import 'package:teacher_search/state/prov_manager.dart';
 import 'package:teacher_search/state/theme_prov.dart';
 import 'package:teacher_search/style/theme_vault.dart';
+import 'package:toastification/toastification.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 // ...
@@ -39,30 +39,31 @@ class MainApp extends StatelessWidget{
           selector: (_, themeProv) => themeProv.mode,
           shouldRebuild: (prev, next) => prev != next,
           builder: (_, mode, __) {
-            return ShadApp.material(
-              key: GlobalKeyData.appKey,
-              routes: {
-                '/faculty_search': (context) => const FacultySearch(),
-                '/teacher_intro': (context) => const TeacherIntro(),
-              },
-              materialThemeBuilder: (context, theme) {
-                if (theme.brightness == Brightness.light) {
+            return ToastificationWrapper(
+              child: ShadApp.material(
+                routes: {
+                  '/faculty_search': (context) => const FacultySearch(),
+                  '/teacher_intro': (context) => const TeacherIntro(),
+                },
+                materialThemeBuilder: (context, theme) {
+                  if (theme.brightness == Brightness.light) {
+                    return theme.copyWith(
+                      primaryColorLight: ThemeVault.light.primaryColorLight,
+                      primaryColorDark: ThemeVault.light.primaryColorDark,
+                      textTheme: ThemeVault.light.textTheme,
+                      colorScheme: ThemeVault.light.colorScheme,
+                    );
+                  }
                   return theme.copyWith(
-                    primaryColorLight: ThemeVault.light.primaryColorLight,
-                    primaryColorDark: ThemeVault.light.primaryColorDark,
-                    textTheme: ThemeVault.light.textTheme,
-                    colorScheme: ThemeVault.light.colorScheme,
+                    primaryColorLight: ThemeVault.dark.primaryColorLight,
+                    primaryColorDark: ThemeVault.dark.primaryColorDark,
+                    textTheme: ThemeVault.dark.textTheme,
+                    colorScheme: ThemeVault.dark.colorScheme,
                   );
-                }
-                return theme.copyWith(
-                  primaryColorLight: ThemeVault.dark.primaryColorLight,
-                  primaryColorDark: ThemeVault.dark.primaryColorDark,
-                  textTheme: ThemeVault.dark.textTheme,
-                  colorScheme: ThemeVault.dark.colorScheme,
-                );
-              },
-              themeMode: ProvManager.themeProv.mode,
-              home: const TeacherIntro(),
+                },
+                themeMode: ProvManager.themeProv.mode,
+                home: const FacultySearch(),
+              ),
             );
           },
         ),
