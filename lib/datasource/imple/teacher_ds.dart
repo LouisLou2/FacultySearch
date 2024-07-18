@@ -16,10 +16,9 @@ class TeacherDs {
 
   static Future<Result<TeaSearchResp>> getTeaSearchReq(TeaSearchReq req) async {
     try{
-      Response response = await _baseDio.get(
+      Response response = await _baseDio.post(
         NetworkPathCollector.search,
         data: req.toJson(),
-        options: NetworkConfig.json_json,
       );
       Resp resp = Resp.fromJson(response.data);
       if(ResCode.isOk(resp.code)) {
@@ -31,9 +30,26 @@ class TeacherDs {
     }
   }
 
+  static Future<void> example() async {
+    try{
+      Response response = await Dio().post(
+        'http://192.168.51.81:8080/auth/login',
+        queryParameters: {
+          'username':'12345678',
+          'password':'12345678',
+        },
+      );
+      Resp resp = Resp.fromJson(response.data);
+      print(resp.data.token);
+    } catch(e){
+      print(e);
+    }
+  }
+
+
   static Future<Result<Teacher>> getTeaInfo(String teacherId) async {
     try{
-      Response response = await _baseDio.get(
+      Response response = await _baseDio.post(
         NetworkPathCollector.info,
         data: {
           'teacherId': teacherId,

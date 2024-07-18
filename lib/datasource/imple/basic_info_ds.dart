@@ -9,17 +9,16 @@ import '../../domain/general/resp.dart';
 import '../../domain/general/result.dart';
 
 class BaseInfoDs {
-  static final _baseDio = NetworkManager.normalDio;
+  static final _baseDio2 = NetworkManager.normalDio;
 
   static Future<Result<List<School>>> getSchoolMajor() async {
     try{
-      Response response = await _baseDio.get(
+      Response response = await _baseDio2.get(
         NetworkPathCollector.school_major,
-        options: NetworkConfig.json_json,
       );
       Resp resp = Resp.fromJson(response.data);
       if(ResCode.isOk(resp.code)) {
-        final data = resp.data['school_major_list'];
+        final data = resp.data;
         return Result.success(
           (data as List).map((e) => School.fromJson(e)).toList(),
         );

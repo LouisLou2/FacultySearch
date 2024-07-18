@@ -8,9 +8,9 @@ class TeacherTitle {
   static const eng_professor = 'Professor';
 
   static const List<String> titles = [
-    professor,
     instrutor,
     aProfessor,
+    professor,
   ];
 
   static const List<String> eng_titles = [

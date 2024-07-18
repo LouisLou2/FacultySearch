@@ -19,7 +19,7 @@ List<Widget> getTextList(List<OptionSection> list, BuildContext context,) {
           style: theme.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.w500,
             fontSize: 18.sp,
-            fontFamily: StyleScheme.engFontFamily,
+            fontFamily: StyleScheme.cnFontFamily,
           ),
           textAlign: TextAlign.start,
         ),
@@ -34,7 +34,7 @@ List<Widget> getTextList(List<OptionSection> list, BuildContext context,) {
             style: theme.textTheme.titleMedium?.copyWith(
               fontSize: 16.sp,
               fontWeight: FontWeight.w400,
-              fontFamily: StyleScheme.engFontFamily,
+              fontFamily: StyleScheme.cnFontFamily,
             ),
           ),
         ),

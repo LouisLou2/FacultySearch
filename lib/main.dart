@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:teacher_search/const/device.dart';
+import 'package:teacher_search/datasource/imple/teacher_ds.dart';
 import 'package:teacher_search/init_affairs.dart';
 import 'package:teacher_search/presentation/page/faculty/faculty_search.dart';
 import 'package:teacher_search/presentation/page/faculty/teacher_intro.dart';
@@ -10,20 +11,16 @@ import 'package:teacher_search/state/prov_manager.dart';
 import 'package:teacher_search/state/theme_prov.dart';
 import 'package:teacher_search/style/theme_vault.dart';
 import 'package:toastification/toastification.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 String? teacherId;
 
 void main(){
   String myurl = Uri.base.toString(); //get complete url
-  // String para1 = Uri.base.queryParameters["para1"]; //get parameter with attribute "para1"
-  // String para2 = Uri.base.queryParameters["para2"]; //get parameter with attribute "para2"
   print('此网站不需要用户登录，所以不会有从其他网站跳转到这里的可能, 给出此网站的url: $myurl');
-  // Future.delayed(const Duration(seconds: 10), () async {
-  //   launchUrl(Uri.http('www.google.com', '/search', {'q': 'dart'}), webOnlyWindowName: '_self');
-  // });
   teacherId = Uri.base.queryParameters["teacherId"];
-  print('teacherId: $teacherId');
+  // TeacherDs.example();
+  //print(TeacherDs.example());
+  //print('teacherId: $teacherId');
   initBeforeRun();
   runApp(const MainApp());
 }

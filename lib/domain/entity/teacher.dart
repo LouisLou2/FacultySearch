@@ -20,7 +20,7 @@ class Teacher {
   String address;
   int aaoOfficeId;
   String aaoOfficeName;
-  List<EduExp> eduExp;
+  List<EduExp> eduExpList;
   String identity;
 
   Teacher({
@@ -43,7 +43,7 @@ class Teacher {
     required this.address,
     required this.aaoOfficeId,
     required this.aaoOfficeName,
-    required this.eduExp,
+    required this.eduExpList,
     required this.identity,
   });
 
@@ -62,13 +62,13 @@ class Teacher {
       title: json['title'],
       bachelor: json['bachelor'],
       email: json['email'],
-      desc: json['desc'],
+      desc: json['description'],  // 修改这里，从 "desc" 改为 "description"
       researchFocus: json['researchFocus'],
       picUrl: json['picUrl'],
       address: json['address'],
       aaoOfficeId: json['aaoOfficeId'],
       aaoOfficeName: json['aaoOfficeName'],
-      eduExp: (json['eduExp'] as List)
+      eduExpList: (json['eduExpList'] as List)
           .map((item) => EduExp.fromJson(item))
           .toList(),
       identity: json['identity'],

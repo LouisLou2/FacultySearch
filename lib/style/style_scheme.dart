@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:teacher_search/extension/context_extension.dart';
 import 'package:teacher_search/state/prov_manager.dart';
 
 class StyleScheme{

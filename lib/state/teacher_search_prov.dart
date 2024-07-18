@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:teacher_search/const/app_param.dart';
+import 'package:teacher_search/const/data_status.dart';
 import 'package:teacher_search/datasource/imple/teacher_ds.dart';
 import 'package:teacher_search/domain/req/tea_search_req.dart';
 import 'package:teacher_search/presentation/helper/toast_helper.dart';
@@ -24,7 +25,16 @@ class TeacherSearchProv with ChangeNotifier {
   List<TeacherBrief> nowTeachers=[];
   /// *******************
   Teacher? nowTeacher;
+  DataStatus _nowTeacherStatus = DataStatus.initial;
+
+  DataStatus get nowTeacherStatus => _nowTeacherStatus;
   bool get isTeacherNull => nowTeacher==null;
+
+  void setNowTeacherStatus(DataStatus status){
+    _nowTeacherStatus = status;
+    notifyListeners();
+  }
+
 
   TeacherSearchProv(){
     nowSum=0;
@@ -48,11 +58,14 @@ class TeacherSearchProv with ChangeNotifier {
     selectedGenderInd=0;
     searchCount=0;
     await ProvManager.baseInfoProv.getSchoolsFromNet();
-    await searchTeachers();
+    await searchTeachers(false);
     notifyListeners();
   }
 
   void setReqSchool(int ind){
+    if(ind!=selectedSchoolInd){
+      setReqMajor(-1);
+    }
     selectedSchoolInd=ind;
     if(ind==-1){
       nowReq.schoolId = null;
@@ -64,18 +77,16 @@ class TeacherSearchProv with ChangeNotifier {
   }
 
   void setReqMajor(int ind){
-    if(selectedSchoolInd==-1){
+    if(ind==-1){
       nowReq.majorId = null;
-      notifyListeners();
       return;
     }
     nowReq.majorId = ProvManager.baseInfoProv.schools[selectedSchoolInd].majors[ind].majorId;
-    notifyListeners();
   }
 
   void setReqTitle(int ind){
     selectedTitleInd = ind;
-    nowReq.title = ind==0 ? null: ind-1;
+    nowReq.title = ind==0 ? null: ind;
     notifyListeners();
   }
 
@@ -93,10 +104,13 @@ class TeacherSearchProv with ChangeNotifier {
   void setReqPageAndSearch(int ind){
     nowPageInd = ind;
     nowReq.offset = ind * AppParam.pageSize;
-    searchTeachers();
+    searchTeachers(true);
   }
 
-  Future<void> searchTeachers() async {
+  Future<void> searchTeachers(bool fromPageChange) async {
+    if(!fromPageChange){
+      nowPageInd = 0;
+    }
     Result<TeaSearchResp> resp = await TeacherDs.getTeaSearchReq(nowReq);
     if(resp.isSuccess){
       nowSum = resp.data!.sum;
@@ -110,25 +124,29 @@ class TeacherSearchProv with ChangeNotifier {
   }
 
   Future<void> tapATeacher(BuildContext context ,int ind) async {
+    setNowTeacherStatus(DataStatus.loading);
     nowTeacher = null;
     Navigator.of(context).pushNamed('/teacher_intro');
     Result<Teacher> resp = await TeacherDs.getTeaInfo(nowTeachers[ind].teacherId);
     if(resp.isSuccess){
       nowTeacher = resp.data;
-      notifyListeners();
+      setNowTeacherStatus(DataStatus.success);
     }else{
       ToastHelper.showErrorWithouDesc('Failed');
+      setNowTeacherStatus(DataStatus.failure);
     }
   }
 
   Future<void> seeTeacherFromId(String teacherId) async {
+    setNowTeacherStatus(DataStatus.loading);
     nowTeacher = null;
     Result<Teacher> resp = await TeacherDs.getTeaInfo(teacherId);
     if(resp.isSuccess){
       nowTeacher = resp.data;
-      notifyListeners();
+      setNowTeacherStatus(DataStatus.success);
     }else{
       ToastHelper.showErrorWithouDesc('Failed');
+      setNowTeacherStatus(DataStatus.failure);
     }
   }
 }

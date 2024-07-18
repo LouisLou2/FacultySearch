@@ -22,5 +22,5 @@ void uiInit(){
 void initBeforeRun(){
   uiInit();
   ProvManager.init();
-  ProvManager.themeProv.setThemeMode(ThemeMode.dark);
+  ProvManager.themeProv.setThemeMode(ThemeMode.light);
 }
